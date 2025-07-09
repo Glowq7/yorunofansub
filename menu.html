@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YoruNoFansub – Anime List</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .anime-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin-top: 50px;
+    }
+
+    .anime-card {
+      background-color: #111;
+      padding: 20px 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #00ffff55;
+      transition: 0.3s ease;
+      text-align: center;
+    }
+
+    .anime-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00ffffaa;
+    }
+
+    .anime-card a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="logo">YoruNoFansub</h1>
+    <p class="subtitle">Select a fansub project translated by Yuri-chan 💖</p>
+
+    <div class="anime-list">
+      <div class="anime-card">
+        <a href="unnamed.html">Unnamed Memory</a>
+      </div>
+      <div class="anime-card">
+        <a href="dressup.html">My Dress-Up Darling</a>
+      </div>
+    </div>
+
+    <a href="index.html" class="enter-btn" style="margin-top: 40px;">← Back to Home</a>
+  </div>
+</body>
+</html>

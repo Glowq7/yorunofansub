@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YoruNoFansub Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px;
+      background-color: #111;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00ffff44;
+    }
+
+    .admin-container h1 {
+      color: #00ffff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      margin-top: 20px;
+      color: white;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background-color: #222;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .submit-btn {
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .preview {
+      margin-top: 40px;
+    }
+
+    .preview-item {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px #00ffff33;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <h1>YoruNoFansub Admin Panel</h1>
+
+    <label for="anime">Anime Name</label>
+    <input type="text" id="anime" placeholder="e.g. Unnamed Memory">
+
+    <label for="episode">Episode Title</label>
+    <input type="text" id="episode" placeholder="e.g. Episode 01 – The Cursed Prince">
+
+    <label for="embed">Embed Link</label>
+    <textarea id="embed" placeholder="Paste your iframe embed code here" rows="4"></textarea>
+
+    <button class="submit-btn" onclick="saveEpisode()">Save Episode</button>
+
+    <div class="preview" id="preview"></div>
+  </div>
+
+  <script>
+    function saveEpisode() {
+      const anime = document.getElementById("anime").value;
+      const episode = document.getElementById("episode").value;
+      const embed = document.getElementById("embed").value;
+
+      if (!anime || !episode || !embed) {
+        alert("Please fill in all fields, Yuri-chan 💖");
+        return;
+      }
+
+      const data = {
+        anime,
+        episode,
+        embed
+      };
+
+      let episodes = JSON.parse(localStorage.getItem("yoruEpisodes")) || [];
+      episodes.push(data);
+      localStorage.setItem("yoruEpisodes", JSON.stringify(episodes));
+
+      showEpisodes();
+      document.getElementById("anime").value = "";
+      document.getElementById("episode").value = "";
+      document.getElementById("embed").value = "";
+    }
+
+    function showEpisodes() {
+      const preview = document.getElementById("preview");
+      preview.innerHTML = "";
+
+      const episodes = JSON.parse(localStorage.getItem("yoruEpisodes")) || [];
+
+      episodes.forEach(ep => {
+        const div = document.createElement("div");
+        div.className = "preview-item";
+        div.innerHTML = `
+          <h2 style="color:#00ffff">${ep.anime}</h2>
+          <h3 style="color:#ccc">${ep.episode}</h3>
+          ${ep.embed}
+        `;
+        preview.appendChild(div);
+      });
+    }
+
+    window.onload = showEpisodes;
+  </script>
+</body>
+</html>
