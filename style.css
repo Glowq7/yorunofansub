@@ -66,3 +66,48 @@ body {
   opacity: 1;
   transform: rotate(20deg) scale(1.2);
 }
+
+@media screen and (max-width: 768px) {
+  body {
+    padding: 10px;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  .container,
+  .menu,
+  .about,
+  .player-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  iframe {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    /* aspect-ratio bazı editörlerde hata verir, test için kaldırdım */
+  }
+
+  .enter-btn {
+    width: 100%;
+    font-size: 18px;
+    padding: 14px;
+    margin-top: 10px;
+  }
+
+  .menu-item {
+    display: block;
+    font-size: 18px;
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  h1, h2, p {
+    word-wrap: break-word;
+    text-align: center;
+  }
+}
+
