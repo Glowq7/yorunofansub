@@ -1,132 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YoruNoFansub Admin Panel</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .admin-container {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 40px;
-      background-color: #111;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #00ffff44;
-    }
-
-    .admin-container h1 {
-      color: #00ffff;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      margin-top: 20px;
-      color: white;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background-color: #222;
+    body {
+      background-color: #000;
       color: #fff;
-      margin-bottom: 10px;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
     }
 
-    .submit-btn {
+    .admin-box, .form-box {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #00ffff66;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
       background-color: #00ffff;
       color: #000;
       border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 15px;
-      box-shadow: 0 0 10px #00ffff;
+      transition: background-color 0.3s ease;
     }
 
-    .preview {
-      margin-top: 40px;
+    button:hover {
+      background-color: #00cccc;
     }
 
-    .preview-item {
-      background-color: #1a1a1a;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px #00ffff33;
+    #adminContent {
+      display: none;
+    }
+
+    li button {
+      margin-left: 10px;
+      background-color: #ff2e63;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    li button:hover {
+      background-color: #cc1c4f;
     }
   </style>
 </head>
 <body>
-  <div class="admin-container">
-    <h1>YoruNoFansub Admin Panel</h1>
+  <div class="admin-box" id="loginBox">
+    <h2>YoruNoFansub Admin Girişi</h2>
+    <input type="password" id="adminPassword" placeholder="Şifre giriniz">
+    <button onclick="login()">Giriş Yap</button>
+  </div>
 
-    <label for="anime">Anime Name</label>
-    <input type="text" id="anime" placeholder="e.g. Unnamed Memory">
+  <div id="adminContent">
+    <div class="form-box">
+      <h3>Yeni Bölüm Ekle</h3>
+      <select id="animeSelect">
+        <option value="Unnamed Memory">Unnamed Memory</option>
+        <option value="My Dress-Up Darling">My Dress-Up Darling</option>
+      </select>
+      <input type="text" id="videoLink" placeholder="Google Drive Embed Link">
+      <input type="text" id="episodeNumber" placeholder="Bölüm Numarası">
+      <button onclick="addEpisode()">Ekle</button>
+    </div>
 
-    <label for="episode">Episode Title</label>
-    <input type="text" id="episode" placeholder="e.g. Episode 01 – The Cursed Prince">
-
-    <label for="embed">Embed Link</label>
-    <textarea id="embed" placeholder="Paste your iframe embed code here" rows="4"></textarea>
-
-    <button class="submit-btn" onclick="saveEpisode()">Save Episode</button>
-
-    <div class="preview" id="preview"></div>
+    <div class="form-box">
+      <h3>Eklenen Bölümler</h3>
+      <ul id="episodeList" style="text-align:left;"></ul>
+    </div>
   </div>
 
   <script>
-    function saveEpisode() {
-      const anime = document.getElementById("anime").value;
-      const episode = document.getElementById("episode").value;
-      const embed = document.getElementById("embed").value;
+    const correctPassword = "yoruno123";
 
-      if (!anime || !episode || !embed) {
-        alert("Please fill in all fields, Yuri-chan 💖");
-        return;
+    function login() {
+      const pass = document.getElementById("adminPassword").value;
+      if (pass === correctPassword) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+      } else {
+        alert("Şifre yanlış canım!");
       }
-
-      const data = {
-        anime,
-        episode,
-        embed
-      };
-
-      let episodes = JSON.parse(localStorage.getItem("yoruEpisodes")) || [];
-      episodes.push(data);
-      localStorage.setItem("yoruEpisodes", JSON.stringify(episodes));
-
-      showEpisodes();
-      document.getElementById("anime").value = "";
-      document.getElementById("episode").value = "";
-      document.getElementById("embed").value = "";
     }
 
-    function showEpisodes() {
-      const preview = document.getElementById("preview");
-      preview.innerHTML = "";
+    function addEpisode() {
+      const anime = document.getElementById("animeSelect").value;
+      const link = document.getElementById("videoLink").value;
+      const number = document.getElementById("episodeNumber").value;
+      const list = document.getElementById("episodeList");
 
-      const episodes = JSON.parse(localStorage.getItem("yoruEpisodes")) || [];
+      if (anime && link && number) {
+        const li = document.createElement("li");
+        li.innerHTML = `${anime} - ${number}: ${link} <button onclick="this.parentElement.remove()">❌</button>`;
+        list.appendChild(li);
 
-      episodes.forEach(ep => {
-        const div = document.createElement("div");
-        div.className = "preview-item";
-        div.innerHTML = `
-          <h2 style="color:#00ffff">${ep.anime}</h2>
-          <h3 style="color:#ccc">${ep.episode}</h3>
-          ${ep.embed}
-        `;
-        preview.appendChild(div);
-      });
+        generateHTML(anime, number, link); // Sayfa oluşturulsun
+
+        alert("Bölüm eklendi ve sayfa indirildi canım!");
+        document.getElementById("videoLink").value = "";
+        document.getElementById("episodeNumber").value = "";
+      } else {
+        alert("Lütfen tüm alanları doldur bebeğim!");
+      }
     }
 
-    window.onload = showEpisodes;
-  </script>
+    function generateHTML(anime, number, link) {
+      const title = `${anime} - Bölüm ${number}`;
+      const content = `
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>${title}</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="logo-wrapper">
+    <img src="images/logo.png" alt="YoruNoFansub Logo" class="site-logo">
+  </div>
+
+  <div class="menu">
+    <a href="index.html" class="menu-item">🏠 Ana Sayfa</a>
+    <a href="menu.html" class="menu-item">🔙 Bölümler</a>
+  </div>
+
+  <div class="player-wrapper">
+    <iframe src="${link}" frameborder="0" allowfullscreen></iframe>
+  </div>
 </body>
 </html>
+`;
+
+      const blob = new Blob([content], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${anime.toLowerCase().replaceAll(" ", "-")}-bolum-${number}.html`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>

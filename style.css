@@ -110,4 +110,39 @@ body {
     text-align: center;
   }
 }
+.logo-wrapper {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.site-logo {
+  width: 200px;
+  max-width: 80%;
+  height: auto;
+  filter: drop-shadow(0 0 10px #00ffffaa);
+  transition: transform 0.3s ease-in-out;
+}
+
+.site-logo:hover {
+  transform: scale(1.05);
+}
+button {
+  cursor: pointer;
+}
+
+li button {
+  margin-left: 10px;
+  background-color: #ff2e63;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+li button:hover {
+  background-color: #cc1c4f;
+}
 
